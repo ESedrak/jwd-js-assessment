@@ -12,44 +12,65 @@
       2. Add an Event listener for the submit button, which will display the score and highlight 
          the correct answers when the button is clicked. Use the code from lines 67 to 86 to help you.
 
-      3. Add 2 more questions to the app (each question must have 4 options).
+      3. Add 2 more questions to the app (each question must have 4 options). 
 
       4. Reload the page when the reset button is clicked (hint: search window.location)
 
       5. Add a countdown timer - when the time is up, end the quiz, display the score and highlight the correct answers
 *************************** */
 
-window.addEventListener('DOMContentLoaded', () => {
-  const start = document.querySelector('#start');
-  start.addEventListener('click', function (e) {
-    document.querySelector('#quizBlock').style.display = 'block';
-    start.style.display = 'none';
+window.addEventListener("DOMContentLoaded", () => {
+  const start = document.querySelector("#start");
+  const submitBtn = document.querySelector("#btnSubmit");
+  const resetBtn = document.querySelector("#btnReset");
+
+  start.addEventListener("click", function (e) {
+    document.querySelector("#quizBlock").style.display = "block";
+    start.style.display = "none";
+
+    // Start the Timer When Start Button Clicked
+    startTimer();
   });
   // quizArray QUESTIONS & ANSWERS
   // q = QUESTION, o = OPTIONS, a = CORRECT ANSWER
   // Basic ideas from https://code-boxx.com/simple-javascript-quiz/
   const quizArray = [
     {
-      q: 'Which is the third planet from the sun?',
-      o: ['Saturn', 'Earth', 'Pluto', 'Mars'],
+      q: "Which is the third planet from the sun?",
+      o: ["Saturn", "Earth", "Pluto", "Mars"],
       a: 1, // array index 1 - so Earth is the correct answer here
     },
     {
-      q: 'Which is the largest ocean on Earth?',
-      o: ['Atlantic Ocean', 'Indian Ocean', 'Arctic Ocean', 'Pacific Ocean'],
+      q: "Which is the largest ocean on Earth?",
+      o: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
       a: 3,
     },
     {
-      q: 'What is the capital of Australia',
-      o: ['Sydney', 'Canberra', 'Melbourne', 'Perth'],
+      q: "What is the capital of Australia",
+      o: ["Sydney", "Canberra", "Melbourne", "Perth"],
       a: 1,
+    },
+    {
+      q: "What is 2 + 2?",
+      o: ["0", "4", "6", "8"],
+      a: 1,
+    },
+    {
+      q: "Which is the best Pod group?",
+      o: [
+        "Platypod",
+        "Don't know the other pod names",
+        "Not this one",
+        "Go back to the first answer",
+      ],
+      a: 0,
     },
   ];
 
   // function to Display the quiz questions and answers from the object
   const displayQuiz = () => {
-    const quizWrap = document.querySelector('#quizWrap');
-    let quizDisplay = '';
+    const quizWrap = document.querySelector("#quizWrap");
+    let quizDisplay = "";
     quizArray.map((quizItem, index) => {
       quizDisplay += `<ul class="list-group">
                    Q - ${quizItem.q}
@@ -65,26 +86,83 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Calculate the score
   const calculateScore = () => {
+    // Selectors
+    const quizHeader = document.querySelector("#quizHeader");
+    const submitMsg = document.querySelector("#submitMsg");
+
+    // Variables
     let score = 0;
+    let numberOfQuestions = quizArray.length;
+
     quizArray.map((quizItem, index) => {
       for (let i = 0; i < 4; i++) {
         //highlight the li if it is the correct answer
         let li = `li_${index}_${i}`;
         let r = `radio_${index}_${i}`;
-        liElement = document.querySelector('#' + li);
-        radioElement = document.querySelector('#' + r);
+        liElement = document.querySelector("#" + li);
+        radioElement = document.querySelector("#" + r);
 
         if (quizItem.a == i) {
+          // console.log("This is checking what the quiz answer is!");
+          // console.log(quizItem.a);
           //change background color of li element here
+          liElement.style.backgroundColor = "lightgreen";
         }
 
-        if (radioElement.checked) {
-          // code for task 1 goes here
+        if (radioElement.checked && quizItem.a == i) {
+          score++;
+          // console.log("I got checked and is corret!");
         }
       }
     });
+    {
+      score > 3
+        ? (submitMsg.innerHTML = "Good Job!")
+        : (submitMsg.innerHTML = "You can do better than that!");
+    }
+    quizHeader.innerHTML = `Your score is ${score}/${numberOfQuestions}`;
+    // console.log(`Hello there! Your score number is ${score}`);
   };
 
   // call the displayQuiz function
   displayQuiz();
+
+  // For The Timer
+  let timer;
+
+  function startTimer() {
+    const displayTime = document.querySelector("#time");
+    // 1 minute timer
+    let seconds = 60;
+    timer = setInterval(function () {
+      displayTime.innerHTML = `${seconds} seconds`;
+      console.log(seconds);
+      seconds--;
+      if (seconds <= 0) {
+        clearInterval(timer);
+      }
+    }, 1000);
+  }
+
+  function stopTimer(timer) {
+    clearInterval(timer);
+  }
+
+  function disableAnswers() {
+    let radioButtons = document.querySelectorAll('input[type="radio"]');
+    for (let radioBtn of radioButtons) {
+      radioBtn.setAttribute("disabled", "");
+    }
+  }
+
+  submitBtn.onclick = () => {
+    disableAnswers();
+    calculateScore();
+    stopTimer(timer);
+    submitBtn.style.display = "none";
+  };
+
+  resetBtn.onclick = () => {
+    window.location.reload();
+  };
 });

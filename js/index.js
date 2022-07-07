@@ -135,12 +135,16 @@ window.addEventListener("DOMContentLoaded", () => {
     let seconds = 60;
     timer = setInterval(function () {
       displayTime.innerHTML = `${seconds} seconds`;
-      console.log(seconds);
+      // console.log(seconds);
       seconds--;
       if (seconds <= 0) {
         calculateScore();
         disableAnswers();
         clearInterval(timer);
+        const noTime = document.createElement("p");
+        noTime.innerHTML = "Time is up!";
+        noTime.style.color = "red";
+        submitMsg.appendChild(noTime);
       }
     }, 1000);
   };

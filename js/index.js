@@ -102,16 +102,15 @@ window.addEventListener("DOMContentLoaded", () => {
         liElement = document.querySelector("#" + li);
         radioElement = document.querySelector("#" + r);
 
-        if (quizItem.a == i) {
+        if (radioElement.checked && quizItem.a == i) {
+          liElement.style.backgroundColor = "lightgreen";
+          score++;
+          // console.log("I got checked and is corret!");
+        } else if (quizItem.a == i) {
+          liElement.style.backgroundColor = "lightcoral";
           // console.log("This is checking what the quiz answer is!");
           // console.log(quizItem.a);
           //change background color of li element here
-          liElement.style.backgroundColor = "lightgreen";
-        }
-
-        if (radioElement.checked && quizItem.a == i) {
-          score++;
-          // console.log("I got checked and is corret!");
         }
       }
     });
@@ -130,7 +129,7 @@ window.addEventListener("DOMContentLoaded", () => {
   // For The Timer
   let timer;
 
-  function startTimer() {
+  const startTimer = () => {
     const displayTime = document.querySelector("#time");
     // 1 minute timer
     let seconds = 60;
@@ -144,11 +143,11 @@ window.addEventListener("DOMContentLoaded", () => {
         clearInterval(timer);
       }
     }, 1000);
-  }
+  };
 
-  function stopTimer(timer) {
+  const stopTimer = (timer) => {
     clearInterval(timer);
-  }
+  };
 
   function disableAnswers() {
     let radioButtons = document.querySelectorAll('input[type="radio"]');

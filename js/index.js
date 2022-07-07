@@ -103,11 +103,14 @@ window.addEventListener("DOMContentLoaded", () => {
         radioElement = document.querySelector("#" + r);
 
         if (radioElement.checked && quizItem.a == i) {
-          liElement.style.backgroundColor = "lightgreen";
           score++;
           // console.log("I got checked and is corret!");
-        } else if (quizItem.a == i) {
+        } else if (radioElement.checked && quizItem.a != i) {
           liElement.style.backgroundColor = "lightcoral";
+        }
+
+        if (quizItem.a == i) {
+          liElement.style.backgroundColor = "lightgreen";
           // console.log("This is checking what the quiz answer is!");
           // console.log(quizItem.a);
           //change background color of li element here

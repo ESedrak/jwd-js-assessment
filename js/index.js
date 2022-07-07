@@ -145,6 +145,7 @@ window.addEventListener("DOMContentLoaded", () => {
         noTime.innerHTML = "Time is up!";
         noTime.style.color = "red";
         submitMsg.appendChild(noTime);
+        submitBtn.style.display = "none";
       }
     }, 1000);
   };

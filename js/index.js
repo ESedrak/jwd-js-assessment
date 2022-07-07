@@ -139,6 +139,8 @@ window.addEventListener("DOMContentLoaded", () => {
       console.log(seconds);
       seconds--;
       if (seconds <= 0) {
+        calculateScore();
+        disableAnswers();
         clearInterval(timer);
       }
     }, 1000);
